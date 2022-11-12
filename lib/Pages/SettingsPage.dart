@@ -22,7 +22,8 @@ class _SettingsPageState extends State<SettingsPage> {
             text: "Logout",
             icon: Icons.logout,
             onPress: () {
-              Navigator.pushNamed(context, LoginPage.routeName);
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                  LoginPage.routeName, (Route<dynamic> route) => false);
             },
             height: 50,
             width: 200,

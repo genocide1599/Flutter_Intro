@@ -4,6 +4,7 @@ import 'package:flutter_intro/Pages/SignupPage.dart';
 import 'package:flutter_intro/Widgets/CustomTextField.dart';
 import 'package:flutter_intro/Widgets/PasswordField.dart';
 import 'package:flutter_intro/Widgets/PrimaryButton.dart';
+import 'package:flutter_intro/Widgets/ScreenArguments.dart';
 
 class LoginPage extends StatefulWidget {
   static String routeName = "/login";
@@ -31,6 +32,10 @@ class _LoginPageState extends State<LoginPage> {
                 width: width * .85,
                 child: Column(
                   children: [
+                    const Text("LOG IN"),
+                    const SizedBox(
+                      height: 20,
+                    ),
                     CustomTextField(
                         label: "Email Address",
                         hint: "enter email",
@@ -52,7 +57,10 @@ class _LoginPageState extends State<LoginPage> {
                         text: "Login",
                         icon: Icons.login,
                         onPress: () {
-                          Navigator.pushNamed(context, DashboardPage.routeName);
+                          Navigator.pushReplacementNamed(
+                              context, DashboardPage.routeName,
+                              arguments:
+                                  ScreenArguments(emailController.value));
                         },
                         height: 50,
                         width: 200,
@@ -64,10 +72,11 @@ class _LoginPageState extends State<LoginPage> {
                         text: "Sign Up",
                         icon: Icons.thumb_up,
                         onPress: () {
-                          Navigator.pushNamed(context, SignupPage.routeName);
+                          Navigator.pushReplacementNamed(
+                              context, SignupPage.routeName);
                         },
                         height: 50,
-                        width: 100,
+                        width: 200,
                         color: Colors.grey)
                   ],
                 ),

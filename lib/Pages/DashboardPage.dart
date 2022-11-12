@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_intro/Pages/SettingsPage.dart';
+import 'package:flutter_intro/Widgets/ScreenArguments.dart';
 
 class DashboardPage extends StatefulWidget {
   static String routeName = "/dashboard";
@@ -12,9 +13,10 @@ class DashboardPage extends StatefulWidget {
 class _DashboardPageState extends State<DashboardPage> {
   @override
   Widget build(BuildContext context) {
+    final args = ModalRoute.of(context)!.settings.arguments as ScreenArguments;
+
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
         title: const Text("Dashboard"),
         actions: [
           GestureDetector(
@@ -28,8 +30,8 @@ class _DashboardPageState extends State<DashboardPage> {
           )
         ],
       ),
-      body: const Center(
-        child: Text("data"),
+      body: Center(
+        child: Text(args.email.text, style: const TextStyle(fontSize: 20)),
       ),
     );
   }
