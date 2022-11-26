@@ -2,6 +2,8 @@
 
 A new Flutter project.
 
+Group Members: Christine Cartilla, Janusz Omamalin
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
