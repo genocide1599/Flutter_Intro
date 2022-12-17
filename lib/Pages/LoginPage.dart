@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_intro/Pages/DashboardPage.dart';
 import 'package:flutter_intro/Pages/SignupPage.dart';
@@ -63,11 +64,27 @@ class _LoginPageState extends State<LoginPage> {
                           text: "Login",
                           icon: Icons.login,
                           onPress: () {
-                            loginWithProvider();
+                            loginWithPasswordAuth();
                           },
                           height: 50,
-                          width: 200,
+                          width: 240,
                           color: Colors.green),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      const Text("OR"),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      PrimaryButton(
+                          text: "Login with Google",
+                          icon: Icons.login_sharp,
+                          onPress: () {
+                            //loginWithProvider();
+                          },
+                          height: 50,
+                          width: 240,
+                          color: Colors.black),
                       const SizedBox(
                         height: 40,
                       ),
@@ -108,6 +125,38 @@ class _LoginPageState extends State<LoginPage> {
       // ignore: use_build_context_synchronously
       Navigator.pushReplacementNamed(context, DashboardPage.routeName,
           arguments: ScreenArguments(emailController.value));
+    } catch (e) {
+      const Text("Something went wrong");
+    }
+
+    setState(() {
+      isLogIn = false;
+    });
+  }
+
+  void loginWithPasswordAuth() async {
+    try {
+      setState(() {
+        isLogIn = true;
+      });
+
+      try {
+        final credential =
+            await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: emailController.value.toString(),
+          password: passwordController.value.toString(),
+        );
+
+        // ignore: use_build_context_synchronously
+        Navigator.pushReplacementNamed(context, DashboardPage.routeName,
+            arguments: ScreenArguments(emailController.value));
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'user-not-found') {
+          print('No user found for that email.');
+        } else if (e.code == 'wrong-password') {
+          print('Wrong password provided for that user.');
+        }
+      }
     } catch (e) {
       const Text("Something went wrong");
     }
