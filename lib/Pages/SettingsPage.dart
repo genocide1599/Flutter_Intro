@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_intro/Pages/LoginPage.dart';
 import 'package:flutter_intro/Services/AuthService.dart';
 import 'package:flutter_intro/Widgets/PrimaryButton.dart';
+import 'package:flutter_intro/Services/PassAuth.dart';
 
 class SettingsPage extends StatefulWidget {
   static String routeName = "/settings";
@@ -25,6 +26,7 @@ class _SettingsPageState extends State<SettingsPage> {
             text: "Logout",
             icon: Icons.logout,
             onPress: () {
+              PassAuth().signOut;
               logout();
             },
             height: 50,

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_intro/Pages/DashboardPage.dart';
 import 'package:flutter_intro/Pages/SignupPage.dart';
 import 'package:flutter_intro/Services/AuthService.dart';
+import 'package:flutter_intro/Services/PassAuth.dart';
 import 'package:flutter_intro/Widgets/CustomTextField.dart';
 import 'package:flutter_intro/Widgets/PasswordField.dart';
 import 'package:flutter_intro/Widgets/PrimaryButton.dart';
@@ -64,7 +65,7 @@ class _LoginPageState extends State<LoginPage> {
                           text: "Login",
                           icon: Icons.login,
                           onPress: () {
-                            loginWithPasswordAuth();
+                            loginWithPassAuth();
                           },
                           height: 50,
                           width: 240,
@@ -80,7 +81,7 @@ class _LoginPageState extends State<LoginPage> {
                           text: "Login with Google",
                           icon: Icons.login_sharp,
                           onPress: () {
-                            //loginWithProvider();
+                            loginWithProvider();
                           },
                           height: 50,
                           width: 240,
@@ -134,29 +135,18 @@ class _LoginPageState extends State<LoginPage> {
     });
   }
 
-  void loginWithPasswordAuth() async {
+  void loginWithPassAuth() async {
     try {
       setState(() {
         isLogIn = true;
       });
 
-      try {
-        final credential =
-            await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: emailController.value.toString(),
-          password: passwordController.value.toString(),
-        );
+      await PassAuth().signInWithEmailAndPassword(
+          email: emailController.text, password: passwordController.text);
 
-        // ignore: use_build_context_synchronously
-        Navigator.pushReplacementNamed(context, DashboardPage.routeName,
-            arguments: ScreenArguments(emailController.value));
-      } on FirebaseAuthException catch (e) {
-        if (e.code == 'user-not-found') {
-          print('No user found for that email.');
-        } else if (e.code == 'wrong-password') {
-          print('Wrong password provided for that user.');
-        }
-      }
+      // ignore: use_build_context_synchronously
+      Navigator.pushReplacementNamed(context, DashboardPage.routeName,
+          arguments: ScreenArguments(emailController.value));
     } catch (e) {
       const Text("Something went wrong");
     }

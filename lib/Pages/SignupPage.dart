@@ -3,6 +3,8 @@ import 'package:flutter_intro/Pages/LoginPage.dart';
 import 'package:flutter_intro/Widgets/CustomTextField.dart';
 import 'package:flutter_intro/Widgets/PasswordField.dart';
 import 'package:flutter_intro/Widgets/PrimaryButton.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_intro/Services/PassAuth.dart';
 
 class SignupPage extends StatefulWidget {
   static String routeName = "/signup";
@@ -83,8 +85,20 @@ class _SignupPageState extends State<SignupPage> {
                       text: "Sign Up",
                       icon: Icons.thumb_up,
                       onPress: () {
-                        Navigator.pushReplacementNamed(
-                            context, LoginPage.routeName);
+                        if (checkPasswords() == true) {
+                          try {
+                            PassAuth().createUserWithEmailAndPassword(
+                                email: emailController.text,
+                                password: conPasswordController.text);
+
+                            Navigator.pushReplacementNamed(
+                                context, LoginPage.routeName);
+                          } catch (e) {
+                            print(e);
+                          }
+                        } else {
+                          print("Passwords do not match");
+                        }
                       },
                       height: 50,
                       width: 200,
@@ -121,5 +135,13 @@ class _SignupPageState extends State<SignupPage> {
     setState(() {
       obscureConPassword = !obscureConPassword;
     });
+  }
+
+  bool checkPasswords() {
+    if (passwordController.text == conPasswordController.text) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }
